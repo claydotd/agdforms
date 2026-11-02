@@ -37,7 +37,7 @@
   <body>
     <div id="success" class="enquiry-form enquiry-form--success is-hidden" role="status">
       <h2>Enquiry sent</h2>
-      <p>Thanks — I’ll be in touch soon to sort out the next steps.</p>
+      <p>Thanks! I’ll be in touch soon to sort out the next steps.</p>
       <button type="button" class="enquiry-form__submit" id="send-another">
         Send another enquiry
       </button>
@@ -86,9 +86,53 @@
           <option value="Room Number One">Room Number One</option>
           <option value="The Haunting of McPhilimy Manor">The Haunting of McPhilimy Manor</option>
           <option value="Christmas special- The Curious Case of the Missing Husband">
-            Christmas Special — The Curious Case of the Missing Husband
+            Christmas Special: The Curious Case of the Missing Husband
           </option>
         </select>
+      </div>
+
+      <section class="availability" aria-labelledby="availability-heading">
+        <div class="availability__header">
+          <h3 id="availability-heading">Bookable dates</h3>
+          <div class="availability__nav">
+            <button type="button" class="availability__nav-btn" id="availability-prev" aria-label="Previous month">
+              ‹
+            </button>
+            <p class="availability__month" id="availability-month" aria-live="polite"></p>
+            <button type="button" class="availability__nav-btn" id="availability-next" aria-label="Next month">
+              ›
+            </button>
+          </div>
+        </div>
+        <div class="availability__weekdays" aria-hidden="true">
+          <span>Mon</span>
+          <span>Tue</span>
+          <span>Wed</span>
+          <span>Thu</span>
+          <span>Fri</span>
+          <span>Sat</span>
+          <span>Sun</span>
+        </div>
+        <div
+          id="availability-list"
+          class="availability__grid"
+          role="grid"
+          aria-label="Available dates this month"
+        ></div>
+        <p id="availability-status" class="availability__status">Loading availability…</p>
+      </section>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-slot">Preferred date &amp; time</label>
+        <textarea
+          id="enquiry-slot"
+          name="preferred_slot"
+          rows="2"
+          placeholder="e.g. 15 November, 7pm"
+        ></textarea>
+        <p class="enquiry-form__hint">
+          Need a different date? Tell me here and I’ll check my availability.
+        </p>
       </div>
 
       <div class="enquiry-form__field">
@@ -106,6 +150,19 @@
           Phone <span class="enquiry-form__optional">(optional)</span>
         </label>
         <input id="enquiry-phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-looking-for">
+          Tell me a bit about what you’re looking for
+          <span class="enquiry-form__optional">(optional)</span>
+        </label>
+        <textarea
+          id="enquiry-looking-for"
+          name="looking_for"
+          rows="4"
+          placeholder="Group size, occasion, anything helpful…"
+        ></textarea>
       </div>
 
       <div class="enquiry-form__check">

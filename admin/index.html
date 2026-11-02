@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>agdforms admin — availability</title>
+    <meta name="robots" content="noindex" />
+    <link rel="stylesheet" href="./admin.css" />
+  </head>
+  <body>
+    <main class="admin">
+      <header class="admin__top">
+        <div>
+          <p class="admin__eyebrow">agdforms</p>
+          <h1>Availability</h1>
+        </div>
+        <button type="button" class="btn btn--ghost is-hidden" id="logout-btn">Log out</button>
+      </header>
+
+      <section id="login-panel" class="panel" aria-labelledby="login-heading">
+        <h2 id="login-heading">Log in</h2>
+        <p class="lede">Enter the admin password to manage bookable dates.</p>
+        <form id="login-form" class="login-form">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+          <button type="submit" class="btn" id="login-submit">Log in</button>
+        </form>
+        <p id="login-error" class="status status--error is-hidden" role="alert"></p>
+      </section>
+
+      <section id="editor-panel" class="panel is-hidden" aria-labelledby="editor-heading">
+        <h2 id="editor-heading" class="visually-hidden">Edit availability</h2>
+
+        <div class="toolbar">
+          <div class="field">
+            <label for="site-select">Site</label>
+            <select id="site-select"></select>
+          </div>
+          <div class="toolbar__actions">
+            <button type="button" class="btn btn--ghost" id="reload-btn">Reload</button>
+            <button type="button" class="btn" id="save-btn">Save dates</button>
+          </div>
+        </div>
+
+        <div class="calendar" aria-label="Availability calendar">
+          <div class="calendar__nav">
+            <button type="button" class="btn btn--icon" id="month-prev" aria-label="Previous month">
+              ‹
+            </button>
+            <p class="calendar__month" id="month-label" aria-live="polite"></p>
+            <button type="button" class="btn btn--icon" id="month-next" aria-label="Next month">
+              ›
+            </button>
+          </div>
+          <div class="calendar__weekdays" aria-hidden="true">
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+            <span>Sun</span>
+          </div>
+          <div id="calendar-grid" class="calendar__grid" role="grid"></div>
+        </div>
+
+        <p class="hint">
+          Click a day to toggle it bookable. Selected days are highlighted. Past days cannot be
+          toggled. Remember to save.
+        </p>
+        <p id="editor-meta" class="meta"></p>
+        <p id="editor-status" class="status is-hidden" role="status"></p>
+      </section>
+    </main>
+
+    <script src="./admin.js" defer></script>
+  </body>
+</html>

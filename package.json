@@ -1,0 +1,11 @@
+{
+  "name": "agdforms",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.4"
+  }
+}

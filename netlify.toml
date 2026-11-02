@@ -1,6 +1,10 @@
 [build]
   publish = "."
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # Allow embedding from parent sites (and local preview).
 # Nested HTML under site folders (e.g. puzzle-and-plot/index.html) is
 # scanned for Netlify Forms at deploy time.

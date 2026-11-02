@@ -1,0 +1,283 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --ink: #111;
+  --muted: #5c5c5c;
+  --line: #cfcfcf;
+  --paper: #f6f6f4;
+  --accent: #1a4d8c;
+  --accent-ink: #fff;
+  --danger: #8b1a1a;
+  --ok: #1b5e34;
+  --available: #dce9f7;
+  --available-border: #1a4d8c;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.admin {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.1rem 3rem;
+}
+
+.admin__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin__eyebrow {
+  margin: 0 0 0.15rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.admin h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 650;
+}
+
+.admin h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.lede,
+.hint,
+.meta {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.hint {
+  margin-top: 0.85rem;
+  margin-bottom: 0.35rem;
+}
+
+.meta {
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 1.1rem 1rem 1.2rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 20rem;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+input[type='password'],
+select {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  background: #fff;
+}
+
+input:focus-visible,
+select:focus-visible,
+.btn:focus-visible,
+.day:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 0.35rem;
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.btn--ghost {
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--line);
+}
+
+.btn--icon {
+  width: 2rem;
+  height: 2rem;
+  margin-top: 0;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--line);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.toolbar .field {
+  flex: 1 1 12rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.toolbar__actions .btn {
+  margin-top: 0;
+}
+
+.calendar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.calendar__month {
+  margin: 0;
+  font-weight: 650;
+}
+
+.calendar__weekdays,
+.calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+
+.calendar__weekdays {
+  margin-bottom: 0.25rem;
+}
+
+.calendar__weekdays span {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.day {
+  height: 2.1rem;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 0.3rem;
+  background: transparent;
+  color: color-mix(in srgb, var(--ink) 40%, transparent);
+  cursor: default;
+}
+
+.day--pad {
+  visibility: hidden;
+}
+
+.day--past {
+  opacity: 0.45;
+}
+
+.day--toggle {
+  color: var(--ink);
+  background: #fff;
+  border-color: var(--line);
+  cursor: pointer;
+}
+
+.day--toggle:hover {
+  border-color: var(--accent);
+}
+
+.day--on {
+  color: var(--accent);
+  background: var(--available);
+  border-color: var(--available-border);
+}
+
+.status {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+.status--error {
+  color: var(--danger);
+}
+
+.status--ok {
+  color: var(--ok);
+}
