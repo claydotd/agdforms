@@ -13,6 +13,14 @@
     document.head.appendChild(link)
   }
 
+  function injectParentHeightScript(parentBase) {
+    if (!parentBase) return
+    const script = document.createElement('script')
+    script.src = `${parentBase}/embed/form-height.js`
+    script.async = true
+    document.head.appendChild(script)
+  }
+
   function notifyHeight() {
     const height = Math.ceil(document.documentElement.scrollHeight)
     window.parent.postMessage({ type: 'agdforms:resize', height }, '*')
@@ -53,6 +61,7 @@
   window.AgdForms = {
     resolveParent,
     injectParentStylesheet,
+    injectParentHeightScript,
     notifyHeight,
     watchHeight,
     postForm,

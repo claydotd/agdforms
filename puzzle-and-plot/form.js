@@ -2,6 +2,7 @@
   const {
     resolveParent,
     injectParentStylesheet,
+    injectParentHeightScript,
     notifyHeight,
     watchHeight,
     postForm,
@@ -29,6 +30,7 @@
   const presetService = params.get('service') || ''
 
   injectParentStylesheet(parentBase)
+  injectParentHeightScript(parentBase)
   setParentLinks(parentBase, [
     [disclaimerLink, '/disclaimer'],
     [refundLink, '/refund-policy'],
