@@ -1,0 +1,10 @@
+[build]
+  publish = "."
+
+# Allow embedding from parent sites (and local preview).
+# Nested HTML under site folders (e.g. puzzle-and-plot/index.html) is
+# scanned for Netlify Forms at deploy time.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "frame-ancestors *"

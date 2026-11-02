@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Puzzle &amp; Plot enquiry</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: transparent;
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .is-hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="success" class="enquiry-form enquiry-form--success is-hidden" role="status">
+      <h2>Enquiry sent</h2>
+      <p>Thanks — I’ll be in touch soon to sort out the next steps.</p>
+      <button type="button" class="enquiry-form__submit" id="send-another">
+        Send another enquiry
+      </button>
+    </div>
+
+    <form
+      id="enquiry-form"
+      class="enquiry-form"
+      name="puzzle-and-plot-enquiry"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      netlify
+    >
+      <input type="hidden" name="form-name" value="puzzle-and-plot-enquiry" />
+      <p class="visually-hidden">
+        <label>
+          Don’t fill this out if you’re human:
+          <input name="bot-field" tabindex="-1" autocomplete="off" />
+        </label>
+      </p>
+
+      <h2>Enquiry form</h2>
+      <p class="enquiry-form__lede">
+        Tell me what you’re after and how to reach you. I’ll get back to you as soon as I can.
+      </p>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-service">I’m enquiring about</label>
+        <select id="enquiry-service" name="service" required>
+          <option value="" disabled selected>Choose a service…</option>
+          <option value="online">Online</option>
+          <option value="wedding">Wedding</option>
+          <option value="city-trail">City Trail</option>
+        </select>
+      </div>
+
+      <div id="online-game-field" class="enquiry-form__field is-hidden">
+        <label for="enquiry-game">Which online game?</label>
+        <select id="enquiry-game" name="online_game">
+          <option value="" disabled selected>Choose a game…</option>
+          <option value="Early Summons">Early Summons</option>
+          <option value="A ruff night at the museum…or alternative title; scooby dooby do-n’t say that because of copy right infringement!">
+            A Ruff Night at the Museum
+          </option>
+          <option value="Room Number One">Room Number One</option>
+          <option value="The Haunting of McPhilimy Manor">The Haunting of McPhilimy Manor</option>
+          <option value="Christmas special- The Curious Case of the Missing Husband">
+            Christmas Special — The Curious Case of the Missing Husband
+          </option>
+        </select>
+      </div>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-name">Name</label>
+        <input id="enquiry-name" name="name" type="text" autocomplete="name" required />
+      </div>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-email">Email</label>
+        <input id="enquiry-email" name="email" type="email" autocomplete="email" required />
+      </div>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-phone">
+          Phone <span class="enquiry-form__optional">(optional)</span>
+        </label>
+        <input id="enquiry-phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+
+      <div class="enquiry-form__check">
+        <input id="enquiry-policies" name="policies_agreed" type="checkbox" value="yes" required />
+        <label for="enquiry-policies">
+          I confirm I have read the
+          <a id="disclaimer-link" href="/disclaimer" target="_top" rel="noopener">disclaimer</a>
+          and
+          <a id="refund-link" href="/refund-policy" target="_top" rel="noopener">refund policy</a>.
+        </label>
+      </div>
+
+      <div id="wedding-deposit-field" class="enquiry-form__check is-hidden">
+        <input id="enquiry-deposit" name="wedding_deposit_agreed" type="checkbox" value="yes" />
+        <label for="enquiry-deposit">
+          I understand a £50 deposit will be required to secure the booking.
+        </label>
+      </div>
+
+      <p id="form-error" class="enquiry-form__error is-hidden" role="alert"></p>
+
+      <button class="enquiry-form__submit" type="submit" id="submit-button">Send enquiry</button>
+    </form>
+
+    <script src="../shared/embed.js"></script>
+    <script src="./form.js" defer></script>
+  </body>
+</html>
