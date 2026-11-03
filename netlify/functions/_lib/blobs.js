@@ -13,7 +13,11 @@ function connectBlobs(event) {
 }
 
 function getAvailabilityStore() {
-  return getStore({ name: STORE_NAME, consistency: 'strong' })
+  // Lambda-compat (`connectLambda`) only provides `edgeURL`, not
+  // `uncachedEdgeURL`, so strong consistency throws BlobsConsistencyError.
+  // Eventual consistency is fine here: admin PUT returns the written payload,
+  // and the public availability response is already cached ~60s.
+  return getStore({ name: STORE_NAME })
 }
 
 function emptyPayload() {

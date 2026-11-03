@@ -19,8 +19,12 @@
 
       <section id="login-panel" class="panel" aria-labelledby="login-heading">
         <h2 id="login-heading">Log in</h2>
-        <p class="lede">Enter the admin password to manage bookable dates.</p>
+        <p class="lede">Choose your site, then enter its admin password.</p>
         <form id="login-form" class="login-form">
+          <label for="login-site">Site</label>
+          <select id="login-site" name="site" required>
+            <option value="" disabled selected>Choose a site…</option>
+          </select>
           <label for="password">Password</label>
           <input
             id="password"
@@ -39,8 +43,8 @@
 
         <div class="toolbar">
           <div class="field">
-            <label for="site-select">Site</label>
-            <select id="site-select"></select>
+            <p class="site-label">Site</p>
+            <p class="site-name" id="site-name"></p>
           </div>
           <div class="toolbar__actions">
             <button type="button" class="btn btn--ghost" id="reload-btn">Reload</button>

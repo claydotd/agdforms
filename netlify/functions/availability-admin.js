@@ -1,42 +1,43 @@
 /**
  * Authenticated availability read/write for the /admin portal.
  * Blob store: `agdforms-availability` (same as public GET).
+ * Session is scoped to a single site.
  */
 
-const { isValidSite, listSites } = require('../../shared/sites')
+const { isValidSite } = require('../../shared/sites')
 const {
   connectBlobs,
   getAvailabilityStore,
   emptyPayload,
 } = require('./_lib/blobs')
 const { normaliseDates } = require('./_lib/dates')
-const { authConfigured, getSessionFromEvent } = require('./_lib/session')
+const { sessionSecretConfigured, getSessionFromEvent } = require('./_lib/session')
 const { json, readJsonBody } = require('./_lib/http')
 
-function requireAuth(event) {
-  if (!authConfigured()) {
-    return json(503, { error: 'Admin auth is not configured' })
+function requireSiteSession(event, site) {
+  if (!sessionSecretConfigured()) {
+    return { error: json(503, { error: 'Admin auth is not configured' }) }
   }
-  if (!getSessionFromEvent(event)) {
-    return json(401, { error: 'Unauthorized' })
+  const session = getSessionFromEvent(event)
+  if (!session) {
+    return { error: json(401, { error: 'Unauthorized' }) }
   }
-  return null
+  if (!site || site !== session.site) {
+    return { error: json(403, { error: 'Not allowed for this site' }) }
+  }
+  return { session }
 }
 
 exports.handler = async function handler(event) {
-  const denied = requireAuth(event)
-  if (denied) return denied
-
   if (event.httpMethod === 'GET') {
     const site = (event.queryStringParameters?.site || '').trim()
-
-    if (!site) {
-      return json(200, { sites: listSites() })
-    }
 
     if (!isValidSite(site)) {
       return json(400, { error: 'Unknown site' })
     }
+
+    const auth = requireSiteSession(event, site)
+    if (auth.error) return auth.error
 
     try {
       connectBlobs(event)
@@ -66,6 +67,9 @@ exports.handler = async function handler(event) {
     if (!isValidSite(site)) {
       return json(400, { error: 'Unknown site' })
     }
+
+    const auth = requireSiteSession(event, site)
+    if (auth.error) return auth.error
 
     if (!Array.isArray(body.dates)) {
       return json(400, { error: 'dates must be an array' })

@@ -1,14 +1,11 @@
 const crypto = require('crypto')
+const { getPasswordEnv, isValidSite } = require('../../../shared/sites')
 
 const COOKIE_NAME = 'agdforms_admin'
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 7 // 7 days
 
 function getSecret() {
   return process.env.ADMIN_SESSION_SECRET || ''
-}
-
-function getPassword() {
-  return process.env.ADMIN_PASSWORD || ''
 }
 
 function timingSafeEqualString(a, b) {
@@ -22,10 +19,20 @@ function timingSafeEqualString(a, b) {
   return crypto.timingSafeEqual(left, right)
 }
 
-function checkPassword(candidate) {
-  const expected = getPassword()
+function getSitePassword(slug) {
+  const envName = getPasswordEnv(slug)
+  if (!envName) return ''
+  return process.env[envName] || ''
+}
+
+function checkSitePassword(slug, candidate) {
+  const expected = getSitePassword(slug)
   if (!expected) return false
   return timingSafeEqualString(candidate, expected)
+}
+
+function sitePasswordConfigured(slug) {
+  return Boolean(getSitePassword(slug))
 }
 
 function sign(payloadB64) {
@@ -34,9 +41,11 @@ function sign(payloadB64) {
   return crypto.createHmac('sha256', secret).update(payloadB64).digest('base64url')
 }
 
-function createSessionToken() {
+function createSessionToken(site) {
+  if (!isValidSite(site)) throw new Error('Invalid site')
   const payload = {
-    v: 1,
+    v: 2,
+    site,
     exp: Math.floor(Date.now() / 1000) + MAX_AGE_SECONDS,
   }
   const payloadB64 = Buffer.from(JSON.stringify(payload), 'utf8').toString('base64url')
@@ -44,31 +53,33 @@ function createSessionToken() {
   return `${payloadB64}.${signature}`
 }
 
+/** @returns {{ site: string } | null} */
 function verifySessionToken(token) {
-  if (!token || typeof token !== 'string') return false
+  if (!token || typeof token !== 'string') return null
   const secret = getSecret()
-  if (!secret) return false
+  if (!secret) return null
 
   const parts = token.split('.')
-  if (parts.length !== 2) return false
+  if (parts.length !== 2) return null
   const [payloadB64, signature] = parts
 
   let expected
   try {
     expected = sign(payloadB64)
   } catch {
-    return false
+    return null
   }
-  if (!timingSafeEqualString(signature, expected)) return false
+  if (!timingSafeEqualString(signature, expected)) return null
 
   try {
     const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf8'))
-    if (!payload || payload.v !== 1) return false
-    if (typeof payload.exp !== 'number') return false
-    if (payload.exp < Math.floor(Date.now() / 1000)) return false
-    return true
+    if (!payload || payload.v !== 2) return null
+    if (typeof payload.exp !== 'number') return null
+    if (payload.exp < Math.floor(Date.now() / 1000)) return null
+    if (!isValidSite(payload.site)) return null
+    return { site: payload.site }
   } catch {
-    return false
+    return null
   }
 }
 
@@ -85,6 +96,7 @@ function parseCookies(header) {
   return out
 }
 
+/** @returns {{ site: string } | null} */
 function getSessionFromEvent(event) {
   const raw =
     event.headers?.cookie ||
@@ -125,18 +137,19 @@ function clearSessionCookieHeader() {
   return parts.join('; ')
 }
 
-function authConfigured() {
-  return Boolean(getPassword() && getSecret())
+function sessionSecretConfigured() {
+  return Boolean(getSecret())
 }
 
 module.exports = {
   COOKIE_NAME,
   MAX_AGE_SECONDS,
-  checkPassword,
+  checkSitePassword,
+  sitePasswordConfigured,
   createSessionToken,
   verifySessionToken,
   getSessionFromEvent,
   sessionCookieHeader,
   clearSessionCookieHeader,
-  authConfigured,
+  sessionSecretConfigured,
 }

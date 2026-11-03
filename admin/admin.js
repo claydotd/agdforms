@@ -7,10 +7,11 @@
   const loginPanel = document.getElementById('login-panel')
   const editorPanel = document.getElementById('editor-panel')
   const loginForm = document.getElementById('login-form')
+  const loginSite = document.getElementById('login-site')
   const loginError = document.getElementById('login-error')
   const loginSubmit = document.getElementById('login-submit')
   const logoutBtn = document.getElementById('logout-btn')
-  const siteSelect = document.getElementById('site-select')
+  const siteNameEl = document.getElementById('site-name')
   const reloadBtn = document.getElementById('reload-btn')
   const saveBtn = document.getElementById('save-btn')
   const monthPrev = document.getElementById('month-prev')
@@ -20,14 +21,13 @@
   const editorMeta = document.getElementById('editor-meta')
   const editorStatus = document.getElementById('editor-status')
 
-  /** @type {{ slug: string, name: string }[]} */
-  let sites = []
   /** @type {Set<string>} */
   let selectedDates = new Set()
   /** @type {string | null} */
   let updatedAt = null
   let dirty = false
   let activeSite = ''
+  let activeSiteName = ''
 
   const view = new Date()
   view.setDate(1)
@@ -68,18 +68,26 @@
     logoutBtn.classList.toggle('is-hidden', !authed)
   }
 
-  function fillSites(list) {
-    sites = list || []
-    siteSelect.innerHTML = ''
-    for (const site of sites) {
+  function fillLoginSites(list) {
+    const previous = loginSite.value
+    loginSite.innerHTML = ''
+    const placeholder = document.createElement('option')
+    placeholder.value = ''
+    placeholder.disabled = true
+    placeholder.textContent = 'Choose a site…'
+    loginSite.appendChild(placeholder)
+
+    for (const site of list || []) {
       const option = document.createElement('option')
       option.value = site.slug
       option.textContent = site.name
-      siteSelect.appendChild(option)
+      loginSite.appendChild(option)
     }
-    if (sites[0]) {
-      siteSelect.value = sites[0].slug
-      activeSite = sites[0].slug
+
+    if (previous && [...loginSite.options].some((o) => o.value === previous)) {
+      loginSite.value = previous
+    } else {
+      placeholder.selected = true
     }
   }
 
@@ -169,18 +177,24 @@
     return data
   }
 
-  async function loadAvailability() {
-    const site = siteSelect.value
-    if (!site) return
-
+  async function enterEditor(site, siteName) {
     activeSite = site
+    activeSiteName = siteName || site
+    siteNameEl.textContent = activeSiteName
+    setAuthed(true)
+    await loadAvailability()
+  }
+
+  async function loadAvailability() {
+    if (!activeSite) return
+
     showEditorStatus('Loading…')
     saveBtn.disabled = true
     reloadBtn.disabled = true
 
     try {
       const data = await api(
-        `/.netlify/functions/availability-admin?site=${encodeURIComponent(site)}`,
+        `/.netlify/functions/availability-admin?site=${encodeURIComponent(activeSite)}`,
       )
       selectedDates = new Set(data.dates || [])
       updatedAt = data.updatedAt || null
@@ -189,7 +203,7 @@
       updateMeta()
       renderCalendar()
     } catch (error) {
-      if (error.status === 401) {
+      if (error.status === 401 || error.status === 403) {
         setAuthed(false)
         showLoginError('Session expired. Please log in again.')
         return
@@ -202,8 +216,7 @@
   }
 
   async function saveAvailability() {
-    const site = siteSelect.value
-    if (!site) return
+    if (!activeSite) return
 
     showEditorStatus('Saving…')
     saveBtn.disabled = true
@@ -212,7 +225,7 @@
       const data = await api('/.netlify/functions/availability-admin', {
         method: 'PUT',
         body: JSON.stringify({
-          site,
+          site: activeSite,
           dates: [...selectedDates].sort(),
         }),
       })
@@ -223,7 +236,7 @@
       updateMeta()
       renderCalendar()
     } catch (error) {
-      if (error.status === 401) {
+      if (error.status === 401 || error.status === 403) {
         setAuthed(false)
         showLoginError('Session expired. Please log in again.')
         return
@@ -234,12 +247,15 @@
     }
   }
 
-  async function bootstrapSession() {
+  async function bootstrap() {
     try {
       const data = await api('/.netlify/functions/auth')
-      fillSites(data.sites)
-      setAuthed(true)
-      await loadAvailability()
+      fillLoginSites(data.sites)
+      if (data.ok && data.site) {
+        await enterEditor(data.site, data.siteName)
+      } else {
+        setAuthed(false)
+      }
     } catch {
       setAuthed(false)
     }
@@ -250,17 +266,18 @@
     showLoginError('')
     loginSubmit.disabled = true
 
-    const password = new FormData(loginForm).get('password')
+    const form = new FormData(loginForm)
+    const site = String(form.get('site') || '')
+    const password = form.get('password')
 
     try {
       const data = await api('/.netlify/functions/auth', {
         method: 'POST',
-        body: JSON.stringify({ action: 'login', password }),
+        body: JSON.stringify({ action: 'login', site, password }),
       })
       loginForm.reset()
-      fillSites(data.sites)
-      setAuthed(true)
-      await loadAvailability()
+      fillLoginSites(data.sites)
+      await enterEditor(data.site, data.siteName)
     } catch (error) {
       showLoginError(error.message || 'Login failed')
     } finally {
@@ -281,18 +298,10 @@
     updatedAt = null
     dirty = false
     activeSite = ''
+    activeSiteName = ''
+    siteNameEl.textContent = ''
     setAuthed(false)
     showLoginError('')
-  })
-
-  siteSelect.addEventListener('change', () => {
-    const next = siteSelect.value
-    if (next === activeSite) return
-    if (dirty && !window.confirm('Discard unsaved changes for this site?')) {
-      siteSelect.value = activeSite
-      return
-    }
-    loadAvailability()
   })
 
   reloadBtn.addEventListener('click', () => {
@@ -314,5 +323,5 @@
     renderCalendar()
   })
 
-  bootstrapSession()
+  bootstrap()
 })()
