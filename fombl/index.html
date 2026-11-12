@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoMBL contact</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: transparent;
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .is-hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="success" class="enquiry-form enquiry-form--success is-hidden" role="status">
+      <h2>Message sent</h2>
+      <p>Thanks for getting in touch. We’ll reply as soon as we can.</p>
+      <button type="button" class="enquiry-form__submit" id="send-another">
+        Send another message
+      </button>
+    </div>
+
+    <form
+      id="enquiry-form"
+      class="enquiry-form"
+      name="fombl-contact"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      netlify
+    >
+      <input type="hidden" name="form-name" value="fombl-contact" />
+      <p class="visually-hidden">
+        <label>
+          Don’t fill this out if you’re human:
+          <input name="bot-field" tabindex="-1" autocomplete="off" />
+        </label>
+      </p>
+
+      <h2>Contact us</h2>
+      <p class="enquiry-form__lede">
+        Send a message and we’ll get it to the right person.
+      </p>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-name">Name</label>
+        <input id="enquiry-name" name="name" type="text" autocomplete="name" required />
+      </div>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-email">Email</label>
+        <input id="enquiry-email" name="email" type="email" autocomplete="email" required />
+      </div>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-phone">
+          Phone <span class="enquiry-form__optional">(optional)</span>
+        </label>
+        <input id="enquiry-phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-subject">Subject</label>
+        <select id="enquiry-subject" name="subject" required>
+          <option value="" disabled selected>Choose a subject…</option>
+          <option value="volunteering">Volunteering</option>
+          <option value="membership">Membership</option>
+          <option value="newsletter">Newsletter</option>
+          <option value="general">General enquiry</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div id="interest-field" class="enquiry-form__field is-hidden">
+        <label for="enquiry-interest">I’m interested in</label>
+        <select id="enquiry-interest" name="interest">
+          <option value="" disabled selected>Choose an option…</option>
+          <option value="saturday-sessions">Saturday volunteer sessions</option>
+          <option value="tree-group">Tree Group</option>
+          <option value="either">Either / both</option>
+          <option value="general">General enquiry</option>
+        </select>
+      </div>
+
+      <div id="subject-line-field" class="enquiry-form__field is-hidden">
+        <label for="enquiry-subject-line">Subject line</label>
+        <input
+          id="enquiry-subject-line"
+          name="subject_line"
+          type="text"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="enquiry-form__field">
+        <label for="enquiry-message">Message</label>
+        <textarea
+          id="enquiry-message"
+          name="message"
+          rows="5"
+          required
+          placeholder="Write your message here."
+        ></textarea>
+      </div>
+
+      <p id="form-error" class="enquiry-form__error is-hidden" role="alert"></p>
+
+      <button class="enquiry-form__submit" type="submit" id="submit-button">Send message</button>
+    </form>
+
+    <script src="../shared/embed.js"></script>
+    <script src="./form.js" defer></script>
+  </body>
+</html>
