@@ -5,18 +5,24 @@
     return (fromQuery || defaultParent || '').replace(/\/$/, '')
   }
 
+  /** Parent can pass ?assets=… to bust cache on unhashed /embed/* files. */
+  function assetQuery() {
+    const v = new URLSearchParams(window.location.search).get('assets')
+    return v ? `?v=${encodeURIComponent(v)}` : ''
+  }
+
   function injectParentStylesheet(parentBase) {
     if (!parentBase) return
     const link = document.createElement('link')
     link.rel = 'stylesheet'
-    link.href = `${parentBase}/embed/form.css`
+    link.href = `${parentBase}/embed/form.css${assetQuery()}`
     document.head.appendChild(link)
   }
 
   function injectParentHeightScript(parentBase) {
     if (!parentBase) return
     const script = document.createElement('script')
-    script.src = `${parentBase}/embed/form-height.js`
+    script.src = `${parentBase}/embed/form-height.js${assetQuery()}`
     script.async = true
     document.head.appendChild(script)
   }
