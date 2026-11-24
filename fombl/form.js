@@ -128,6 +128,13 @@
     formNameInput.value = formName
     form.setAttribute('name', formName)
 
+    const originalSubjectLine = subjectLineInput.value
+    const subjectDetail =
+      subjectSelect.value === 'volunteering'
+        ? interestSelect.selectedOptions[0]?.text || 'Volunteering'
+        : originalSubjectLine.trim()
+    subjectLineInput.value = `FoMBL Contact Form Submission: ${subjectDetail}`
+
     submitButton.disabled = true
     submitButton.textContent = 'Sending…'
 
@@ -138,6 +145,7 @@
       setSubjectUI(subjectSelect.value)
       showSuccess()
     } catch (error) {
+      subjectLineInput.value = originalSubjectLine
       showError(
         error instanceof Error
           ? error.message
