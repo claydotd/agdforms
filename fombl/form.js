@@ -9,9 +9,25 @@
   } = window.AgdForms
 
   const DEFAULT_PARENT = 'https://analoguegonedigital.co.uk/fombl'
-  const SUBJECTS = ['volunteering', 'membership', 'newsletter', 'general', 'other']
+  const SUBJECTS = [
+    'volunteering',
+    'membership',
+    'newsletter',
+    'general',
+    'school-partnerships',
+    'other',
+  ]
+  const FORM_BY_SUBJECT = {
+    volunteering: 'fombl-volunteering',
+    membership: 'fombl-membership',
+    newsletter: 'fombl-secretary',
+    general: 'fombl-secretary',
+    other: 'fombl-secretary',
+    'school-partnerships': 'fombl-schools',
+  }
 
   const form = document.getElementById('enquiry-form')
+  const formNameInput = document.getElementById('form-name')
   const success = document.getElementById('success')
   const subjectSelect = document.getElementById('enquiry-subject')
   const interestField = document.getElementById('interest-field')
@@ -101,6 +117,16 @@
       notifyHeight()
       return
     }
+
+    const formName = FORM_BY_SUBJECT[subjectSelect.value]
+    if (!formName) {
+      showError('Please choose a subject.')
+      notifyHeight()
+      return
+    }
+
+    formNameInput.value = formName
+    form.setAttribute('name', formName)
 
     submitButton.disabled = true
     submitButton.textContent = 'Sending…'

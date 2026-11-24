@@ -37,6 +37,48 @@
     </style>
   </head>
   <body>
+    <!-- Netlify form stubs: detected at build so each inbox can have its own notification email. -->
+    <form name="fombl-volunteering" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="subject" />
+      <input type="text" name="interest" />
+      <input type="text" name="subject_line" />
+      <textarea name="message"></textarea>
+    </form>
+    <form name="fombl-membership" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="subject" />
+      <input type="text" name="interest" />
+      <input type="text" name="subject_line" />
+      <textarea name="message"></textarea>
+    </form>
+    <form name="fombl-secretary" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="subject" />
+      <input type="text" name="interest" />
+      <input type="text" name="subject_line" />
+      <textarea name="message"></textarea>
+    </form>
+    <form name="fombl-schools" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="subject" />
+      <input type="text" name="interest" />
+      <input type="text" name="subject_line" />
+      <textarea name="message"></textarea>
+    </form>
+
     <div id="success" class="enquiry-form enquiry-form--success is-hidden" role="status">
       <h2>Message sent</h2>
       <p>Thanks for getting in touch. We’ll reply as soon as we can.</p>
@@ -45,16 +87,8 @@
       </button>
     </div>
 
-    <form
-      id="enquiry-form"
-      class="enquiry-form"
-      name="fombl-contact"
-      method="POST"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      netlify
-    >
-      <input type="hidden" name="form-name" value="fombl-contact" />
+    <form id="enquiry-form" class="enquiry-form" method="POST">
+      <input type="hidden" name="form-name" id="form-name" value="" />
       <p class="visually-hidden">
         <label>
           Don’t fill this out if you’re human:
@@ -92,6 +126,7 @@
           <option value="membership">Membership</option>
           <option value="newsletter">Newsletter</option>
           <option value="general">General enquiry</option>
+          <option value="school-partnerships">School Partnerships</option>
           <option value="other">Other</option>
         </select>
       </div>
