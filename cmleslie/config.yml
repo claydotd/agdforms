@@ -25,7 +25,7 @@ collections:
     extension: md
     format: frontmatter
     slug: "{{slug}}"
-    summary: "{{title}} — {{date}}"
+    summary: "{{title}} | {{date}}"
     sortable_fields: ["date", "title"]
     fields:
       - { label: Title, name: title, widget: string }
@@ -38,7 +38,7 @@ collections:
         field: { label: Tag, name: tag, widget: string }
       - { label: Excerpt, name: excerpt, widget: text, required: false, hint: "Short summary shown on the blog list and home page" }
       - { label: Author, name: author, widget: string, required: false, hint: "Defaults to C. M. Leslie if left blank" }
-      - { label: Body, name: body, widget: markdown, hint: "Full post. Start at ## headings — the title is shown separately." }
+      - { label: Body, name: body, widget: markdown, hint: "Full post. Start at ## (H2) headings. The title is shown separately." }
 
   - name: pages
     label: Pages
@@ -54,6 +54,16 @@ collections:
             name: show_in_nav
             widget: boolean
             default: true
+          - label: Show page image
+            name: show_image
+            widget: boolean
+            default: true
+            hint: Toggle the author photo beside the home page copy
+          - label: Page image
+            name: image
+            widget: image
+            required: false
+            hint: Author/portrait photo shown beside the home page body
           - { label: Body, name: body, widget: markdown }
       - file: src/content/about.md
         name: about
@@ -63,6 +73,16 @@ collections:
             name: show_in_nav
             widget: boolean
             default: false
+          - label: Show page image
+            name: show_image
+            widget: boolean
+            default: true
+            hint: Toggle the author photo beside the about page copy
+          - label: Page image
+            name: image
+            widget: image
+            required: false
+            hint: Author/portrait photo shown beside the about page body
           - { label: Body, name: body, widget: markdown }
       - file: src/content/blog-intro.md
         name: blog-intro
@@ -72,7 +92,7 @@ collections:
             name: show_in_nav
             widget: boolean
             default: true
-            hint: Controls whether “Blog” appears in the main nav
+            hint: Controls whether Blog appears in the main nav
           - { label: Body, name: body, widget: markdown, hint: "Intro copy shown above the post list on /blog" }
       - file: src/content/contact.md
         name: contact
