@@ -1,0 +1,103 @@
+# C. M. Leslie Decap CMS — hosted here so Netlify OAuth can return the token
+# (Netlify only completes login when the CMS origin matches this site).
+# Edits commit to claydotd/cleslieauthor on GitHub.
+
+backend:
+  name: github
+  repo: claydotd/cleslieauthor
+  branch: main
+  site_domain: agdforms.netlify.app
+
+site_url: https://agdforms.netlify.app/cmleslie/
+
+publish_mode: simple
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: blog
+    label: Blog
+    label_singular: Blog post
+    description: >-
+      Blog posts for the blog page.
+    folder: src/content/blogs
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, date_format: YYYY-MM-DD, time_format: false }
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        allow_add: true
+        field: { label: Tag, name: tag, widget: string }
+      - { label: Excerpt, name: excerpt, widget: text, required: false, hint: "Short summary shown on the blog list and home page" }
+      - { label: Author, name: author, widget: string, required: false, hint: "Defaults to C. M. Leslie if left blank" }
+      - { label: Body, name: body, widget: markdown, hint: "Full post. Start at ## headings — the title is shown separately." }
+
+  - name: pages
+    label: Pages
+    description: >-
+      Static site pages. Use “Show in navigation” to include or hide each page
+      in the main nav (the page URL still works when hidden).
+    files:
+      - file: src/content/home.md
+        name: home
+        label: Home
+        fields:
+          - label: Show in navigation
+            name: show_in_nav
+            widget: boolean
+            default: true
+          - { label: Body, name: body, widget: markdown }
+      - file: src/content/about.md
+        name: about
+        label: About
+        fields:
+          - label: Show in navigation
+            name: show_in_nav
+            widget: boolean
+            default: false
+          - { label: Body, name: body, widget: markdown }
+      - file: src/content/blog-intro.md
+        name: blog-intro
+        label: Blog intro
+        fields:
+          - label: Show in navigation
+            name: show_in_nav
+            widget: boolean
+            default: true
+            hint: Controls whether “Blog” appears in the main nav
+          - { label: Body, name: body, widget: markdown, hint: "Intro copy shown above the post list on /blog" }
+      - file: src/content/contact.md
+        name: contact
+        label: Contact
+        fields:
+          - label: Show in navigation
+            name: show_in_nav
+            widget: boolean
+            default: true
+          - { label: Body, name: body, widget: markdown }
+      - file: src/content/portfolio.md
+        name: portfolio
+        label: Portfolio
+        fields:
+          - label: Show in navigation
+            name: show_in_nav
+            widget: boolean
+            default: false
+          - { label: Body, name: body, widget: markdown }
+      - file: src/content/press-kit.md
+        name: press-kit
+        label: Press kit
+        fields:
+          - label: Show in navigation
+            name: show_in_nav
+            widget: boolean
+            default: false
+          - { label: Body, name: body, widget: markdown }
