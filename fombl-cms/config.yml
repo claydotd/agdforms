@@ -20,9 +20,7 @@ collections:
     label: Meetings & Events
     label_singular: Meeting or event
     description: >-
-      AGMs, parties, and other one-off meetings shown on the Events page.
-      Click “New meeting or event” to add one. The filename becomes the page
-      link anchor (e.g. agm-2027).
+      Events and Meetings to show on the Events page.
     folder: src/content/data/meetings
     create: true
     extension: json
@@ -39,7 +37,7 @@ collections:
       - label: Type
         name: kind
         widget: select
-        options: ["AGM", "Party", "Meeting", "Other"]
+        options: ["AGM", "Meeting", "Party", "Other"]
         default: Meeting
       - label: Audience badge
         name: tag
@@ -51,9 +49,7 @@ collections:
     label: Volunteering
     label_singular: Session
     description: >-
-      Dated Friday workdays and Saturday volunteer mornings. Choose the day,
-      set the date, and fill in place or notes only when they differ from the
-      usual pattern.
+      Dated Friday workdays and Saturday volunteer sessions. If left blank, they will show the default values.'.
     folder: src/content/data/sessions
     create: true
     extension: json
@@ -77,14 +73,13 @@ collections:
         name: contact
         widget: string
         required: false
-        hint: "Optional full sentence, e.g. Contact projects@fombl.org.uk if you have any questions"
+        hint: "Optional to let them know who to contact."
 
   - name: news
     label: News
     label_singular: News post
     description: >-
-      Short news posts on the News page. Newsletter PDFs are managed separately
-      by a developer.
+      Short news posts for the News feed. Newsletter posts are done separately by Clay, not through this CMS.
     folder: public/news
     create: true
     extension: md
