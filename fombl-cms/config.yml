@@ -17,66 +17,74 @@ public_folder: /images
 
 collections:
   - name: meetings
-    label: Meetings
-    files:
-      - name: meetings
-        label: Meetings
-        file: src/content/data/meetings.json
-        format: json
-        fields:
-          - label: Meetings
-            name: items
-            widget: list
-            summary: "{{title}} — {{date}}"
-            fields:
-              - { label: ID, name: id, widget: string, hint: "URL anchor, e.g. agm-2027" }
-              - { label: Kind, name: kind, widget: string, hint: "AGM, Party, Meeting, …" }
-              - { label: Title, name: title, widget: string }
-              - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, date_format: YYYY-MM-DD, time_format: false }
-              - { label: Time, name: time, widget: string, required: false }
-              - { label: Place, name: place, widget: string }
-              - { label: Summary, name: summary, widget: text }
-              - { label: Tag, name: tag, widget: string, required: false, hint: "Optional badge, e.g. Members and Invite Only" }
+    label: Meetings & Events
+    label_singular: Meeting or event
+    description: >-
+      AGMs, parties, and other one-off meetings shown on the Events page.
+      Click “New meeting or event” to add one. The filename becomes the page
+      link anchor (e.g. agm-2027).
+    folder: src/content/data/meetings
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    summary: "{{kind}} — {{title}} ({{date}})"
+    sortable_fields: ["date", "title", "kind"]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, date_format: YYYY-MM-DD, time_format: false }
+      - { label: Time, name: time, widget: string, required: false, hint: "e.g. 6:00–8:30pm" }
+      - { label: Place, name: place, widget: string }
+      - { label: Summary, name: summary, widget: text, hint: "Short description shown under the title" }
+      - label: Type
+        name: kind
+        widget: select
+        options: ["AGM", "Party", "Meeting", "Other"]
+        default: Meeting
+      - label: Audience badge
+        name: tag
+        widget: string
+        required: false
+        hint: "Optional label shown on the listing, e.g. Members and Invite Only"
 
-  - name: saturday_sessions
-    label: Saturday sessions
-    files:
-      - name: saturday-sessions
-        label: Saturday sessions
-        file: src/content/data/saturday-sessions.json
-        format: json
-        fields:
-          - label: Sessions
-            name: items
-            widget: list
-            summary: "{{date}}"
-            fields:
-              - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, date_format: YYYY-MM-DD, time_format: false }
-              - { label: Note, name: note, widget: text, required: false }
-              - { label: Contact line, name: contact, widget: string, required: false }
-
-  - name: friday_sessions
-    label: Friday sessions
-    files:
-      - name: friday-sessions
-        label: Friday sessions
-        file: src/content/data/friday-sessions.json
-        format: json
-        fields:
-          - label: Sessions
-            name: items
-            widget: list
-            summary: "{{date}} — {{place}}"
-            fields:
-              - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, date_format: YYYY-MM-DD, time_format: false }
-              - { label: Time, name: time, widget: string, required: false, hint: "e.g. 1:30pm" }
-              - { label: Meeting place, name: place, widget: string, required: false }
-              - { label: Note, name: note, widget: text, required: false }
-              - { label: Contact line, name: contact, widget: string, required: false }
+  - name: volunteering
+    label: Volunteering
+    label_singular: Session
+    description: >-
+      Dated Friday workdays and Saturday volunteer mornings. Choose the day,
+      set the date, and fill in place or notes only when they differ from the
+      usual pattern.
+    folder: src/content/data/sessions
+    create: true
+    extension: json
+    format: json
+    slug: "{{fields.day}}-{{fields.date}}"
+    summary: "{{day}} — {{date}}"
+    sortable_fields: ["date", "day"]
+    fields:
+      - label: Day
+        name: day
+        widget: select
+        options:
+          - { label: Friday, value: friday }
+          - { label: Saturday, value: saturday }
+        default: friday
+      - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, date_format: YYYY-MM-DD, time_format: false }
+      - { label: Time, name: time, widget: string, required: false, hint: "e.g. 1:30pm (Friday) or 10:00am (Saturday)" }
+      - { label: Meeting place, name: place, widget: string, required: false, hint: "Leave blank if the usual place applies" }
+      - { label: Note, name: note, widget: text, required: false, hint: "Extra detail for this date only" }
+      - label: Contact line
+        name: contact
+        widget: string
+        required: false
+        hint: "Optional full sentence, e.g. Contact projects@fombl.org.uk if you have any questions"
 
   - name: news
-    label: News posts
+    label: News
     label_singular: News post
+    description: >-
+      Short news posts on the News page. Newsletter PDFs are managed separately
+      by a developer.
     folder: public/news
     create: true
     extension: md
@@ -87,5 +95,5 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, date_format: YYYY-MM-DD, time_format: false }
-      - { label: Summary, name: summary, widget: text }
-      - { label: Body, name: body, widget: markdown }
+      - { label: Summary, name: summary, widget: text, hint: "One or two sentences shown in the news list" }
+      - { label: Body, name: body, widget: markdown, hint: "Full post. You can add links with the link button." }

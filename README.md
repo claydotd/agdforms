@@ -12,7 +12,7 @@ The FoMBL content admin UI is hosted on this Netlify site so GitHub login can fi
 
 Netlify only returns the OAuth token to this site’s own origin. Opening the CMS on GitHub Pages (`analoguegonedigital.co.uk`) authorizes successfully but then stalls — that is why the UI lives here. Saves still commit to `claydotd/fombl` on GitHub.
 
-Files: [`fombl-cms/`](fombl-cms/) (keep in sync with `fombl` repo `public/admin/` when collections change).
+Files: [`fombl-cms/`](fombl-cms/) (keep in sync with `fombl` repo `public/admin/` when collections change). Collections: Meetings & Events, Volunteering, News.
 
 ### One-time OAuth setup
 
